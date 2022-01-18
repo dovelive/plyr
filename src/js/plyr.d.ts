@@ -589,6 +589,7 @@ declare namespace Plyr {
       restart?: HTMLButtonElement;
       rewind?: HTMLButtonElement;
       settings?: HTMLButtonElement;
+      chapters?: HTMLButtonElement;
     };
     captions: HTMLElement | null;
     container: HTMLElement | null;

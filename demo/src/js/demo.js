@@ -53,6 +53,46 @@ import toggleClass from './toggle-class';
       captions: {
         active: true,
       },
+            chapters: {
+                enabled: false,
+                contents: [{
+                    index: 1,
+                    title: 'test1',
+                    thumbnail: 'https://galacaa-prod.s3.ap-northeast-1.amazonaws.com/uploads/images/video/2021-12/1638799976_s_14755.jpg',
+                    link: 'https://gen-universe.com/video/100',
+                    desc: 'test1test1test1test1test1test1test1test1test1test1test1test1test1'
+                }, {
+                    index: 2,
+                    title: 'test2',
+                    thumbnail: 'https://galacaa-prod.s3.ap-northeast-1.amazonaws.com/uploads/images/video/2021-12/1638964278_s_logo.png',
+                    link: 'https://gen-universe.com/video/101',
+                    desc: 'test2test2test2test2test2test2test2test2test2'
+                }, {
+                    index: 3,
+                    title: 'test3',
+                    thumbnail: 'https://galacaa-prod.s3.ap-northeast-1.amazonaws.com/uploads/images/video/2021-12/1638948449_s_img_logo.png',
+                    link: 'https://gen-universe.com/video/102',
+                    desc: 'test3test3test3test3test3test3test3test3test3test3test3test3test3test3'
+                }, {
+                    index: 4,
+                    title: 'test4',
+                    thumbnail: 'https://galacaa-prod.s3.ap-northeast-1.amazonaws.com/uploads/images/video/2021-12/1638947529_s_DIR_IWL_LOGO_FIX_OL-1.png',
+                    link: 'https://gen-universe.com/video/103',
+                    desc: 'test3test3test3test3test3test3test3test3test3test3test3test3test3test3'
+                }, {
+                    index: 5,
+                    title: 'test5',
+                    thumbnail: 'https://galacaa-prod.s3.ap-northeast-1.amazonaws.com/uploads/images/video/2021-12/1638949812_s_img_logo.png',
+                    link: 'https://gen-universe.com/video/104',
+                    desc: 'test3test3test3test3test3test3test3test3test3test3test3test3test3test3'
+                }, {
+                    index: 6,
+                    title: 'test6',
+                    thumbnail: 'https://galacaa-prod.s3.ap-northeast-1.amazonaws.com/uploads/images/video/2021-12/1638800362_s_1638506682_s_merry_SNS.jpg',
+                    link: 'https://gen-universe.com/video/105',
+                    desc: 'test3test3test3test3test3test3test3test3test3test3test3test3test3test3'
+                }]
+              },
       ads: {
         enabled: window.location.host.includes(production),
         publisherId: '918848828995742',

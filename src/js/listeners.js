@@ -21,6 +21,7 @@ class Listeners {
 
     this.handleKey = this.handleKey.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
+    this.toggleChapterPopup = this.toggleChapterPopup.bind(this);
     this.setTabFocus = this.setTabFocus.bind(this);
     this.firstTouch = this.firstTouch.bind(this);
   }
@@ -182,6 +183,11 @@ class Listeners {
     controls.toggleMenu.call(this.player, event);
   }
 
+  // Toggle chapter popup
+  toggleChapterPopup(event) {
+    controls.toggleChapterPopup.call(this.player, event);
+  }
+
   // Device is touch enabled
   firstTouch = () => {
     const { player } = this;
@@ -254,6 +260,7 @@ class Listeners {
 
     // Click anywhere closes menu
     toggleListener.call(player, document.body, 'click', this.toggleMenu, toggle);
+    toggleListener.call(player, document.body, 'click', this.toggleChapterPopup, toggle);
 
     // Detect touch by events
     once.call(player, document.body, 'touchstart', this.firstTouch);
@@ -649,9 +656,29 @@ class Listeners {
         event.preventDefault();
 
         controls.toggleMenu.call(player, event);
+
+        controls.toggleChapterPopup.call(player, event);
       },
       null,
       false,
+    ); // Can't be passive as we're preventing default
+
+    // Chapters menu - click toggle
+    this.bind(
+        elements.buttons.chapters,
+        'click',
+        (event) => {
+          // Prevent the document click listener closing the chapter popup
+          event.stopPropagation();
+          event.preventDefault();
+
+          controls.toggleChapterPopup.call(player, event);
+
+
+          controls.toggleMenu.call(player, event);
+        },
+        null,
+        false,
     ); // Can't be passive as we're preventing default
 
     // Settings menu - keyboard toggle

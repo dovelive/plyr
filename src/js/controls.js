@@ -63,6 +63,7 @@ const controls = {
         pip: getElement.call(this, this.config.selectors.buttons.pip),
         airplay: getElement.call(this, this.config.selectors.buttons.airplay),
         settings: getElement.call(this, this.config.selectors.buttons.settings),
+        chapters: getElement.call(this, this.config.selectors.buttons.chapters),
         captions: getElement.call(this, this.config.selectors.buttons.captions),
         fullscreen: getElement.call(this, this.config.selectors.buttons.fullscreen),
       };
@@ -796,6 +797,10 @@ const controls = {
       controls.updateTimeDisplay.call(this, this.elements.display.duration, this.duration);
     }
 
+    if (this.config.chapters) {
+      controls.setChapters.call(this);
+    }
+
     // Update the tooltip (if visible)
     controls.updateSeekTooltip.call(this);
   },
@@ -1083,6 +1088,88 @@ const controls = {
     controls.updateSetting.call(this, type, list);
   },
 
+  // Set a list of available chapters languages
+  setChapters() {
+    // Menu required
+    if (!is.element(this.elements.chapters.panels.home)) {
+      return;
+    }
+
+    let list = this.elements.chapters.panels.home.querySelector('[role="menu"]');
+    // Empty the menu
+    emptyElement(list);
+
+    // Toggle the pane and tab
+    const toggle = !is.empty(this.config.chapters.enabled) && this.config.chapters.enabled && !is.empty(this.config.chapters.contents) && this.config.chapters.contents.length > 1;
+    // If we're hiding, nothing more to do
+    if (!toggle) {
+      return;
+    }
+
+    // Create items
+    this.config.chapters.contents.forEach((chapter) => {
+      controls.createChapterItem.call(this, {
+        list,
+        index: chapter.index,
+        link: chapter.link,
+        title: chapter.title,
+        desc: chapter.desc,
+        thumbnail: chapter.thumbnail,
+      });
+    });
+  },
+
+  // Create a settings menu item
+  createChapterItem({ list, index, link, title, desc, thumbnail }) {
+    const attributes = getAttributesFromSelector(this.config.selectors.inputs['chapters']);
+    const menuItem = createElement(
+      'a',
+      extend(attributes, {
+        class: `${this.config.classNames.control} ${attributes.class ? attributes.class : ''}`.trim(),
+        href: link,
+        index,
+      }),
+    );
+
+    const highlightItem = createElement('div', {
+      class: 'chapter-highlight',
+      hidden: ''
+    });
+    highlightItem.innerHTML = title;
+    menuItem.appendChild(highlightItem);
+
+    const contentItem = createElement('div', {
+      class: 'chapter-content',
+    });
+
+    const titleItem = createElement('div', {
+      class: 'chapter-title',
+    });
+    titleItem.innerHTML = title;
+    contentItem.appendChild(titleItem);
+
+    const detailDivItem = createElement('div', {
+      class: 'chapter-detail'
+    });
+
+    const thumbnailItem = createElement('img', {
+      class: 'chapter-thumbnail',
+      src: thumbnail
+    });
+    detailDivItem.appendChild(thumbnailItem);
+
+    const descriptionItem = createElement('div', {
+      class: 'chapter-desc',
+    });
+    descriptionItem.innerHTML = desc;
+    detailDivItem.appendChild(descriptionItem);
+
+    contentItem.appendChild(detailDivItem);
+
+    menuItem.appendChild(contentItem);
+    list.appendChild(menuItem);
+  },
+
   // Check if we need to hide/show the settings menu
   checkMenu() {
     const { buttons } = this.elements.settings;
@@ -1234,6 +1321,56 @@ const controls = {
 
     // Focus the first item
     controls.focusFirstMenuItem.call(this, target, tabFocus);
+  },
+
+  // Show/hide chapter popup
+  toggleChapterPopup(input) {
+    const { popup } = this.elements.chapters;
+    const button = this.elements.buttons.chapters;
+
+    // Menu and button are required
+    if (!is.element(popup) || !is.element(button)) {
+      return;
+    }
+
+    // True toggle by default
+    const { hidden } = popup;
+    let show = hidden;
+
+    if (is.boolean(input)) {
+      show = input;
+    } else if (is.keyboardEvent(input) && input.which === 27) {
+      show = false;
+    } else if (is.event(input)) {
+      // If Plyr is in a shadowDOM, the event target is set to the component, instead of the
+      // Element in the shadowDOM. The path, if available, is complete.
+      const target = is.function(input.composedPath) ? input.composedPath()[0] : input.target;
+      const isMenuItem = popup.contains(target);
+
+      // If the click was inside the menu or if the click
+      // wasn't the button or menu item and we're trying to
+      // show the menu (a doc click shouldn't show the menu)
+      if (isMenuItem || (!isMenuItem && input.target !== button && show)) {
+        return;
+      }
+    }
+
+    // Set button attributes
+    button.setAttribute('aria-expanded', show);
+
+    // Show the actual popup
+    toggleHidden(popup, !show);
+
+    // Add class hook
+    toggleClass(this.elements.container, this.config.classNames.menu.open, show);
+
+    // Focus the first item if key interaction
+    if (show && is.keyboardEvent(input)) {
+      controls.focusFirstMenuItem.call(this, null, true);
+    } else if (!show && !hidden) {
+      // If closing, re-focus the button
+      setFocus.call(this, button, is.keyboardEvent(input));
+    }
   },
 
   // Set the download URL
@@ -1554,6 +1691,57 @@ const controls = {
 
         this.elements.settings.popup = popup;
         this.elements.settings.menu = wrapper;
+      }
+
+      if (control === 'chapters' && !is.empty(this.config.chapters)) {
+        const toggle = !is.empty(this.config.chapters.enabled) && this.config.chapters.enabled && !is.empty(this.config.chapters.contents) && this.config.chapters.contents.length > 1;
+        // show chapter control if content is available
+        if (toggle) {
+          const wrapper = createElement(
+              'div',
+              extend({}, defaultAttributes, {
+                class: `${defaultAttributes.class} plyr__menu`.trim(),
+              }),
+          );
+
+          wrapper.appendChild(
+              createButton.call(this, 'chapters', {
+                'aria-haspopup': true,
+                'aria-controls': `plyr-chapters-${data.id}`,
+                'aria-expanded': false,
+              }),
+          );
+
+          const popup = createElement('div', {
+            class: 'plyr__chapter__container',
+            id: `plyr-chapters-${data.id}`,
+            hidden: '',
+          });
+
+          const inner = createElement('div');
+
+          const home = createElement('div', {
+            id: `plyr-chapters-${data.id}-home`,
+          });
+
+          // Create the menu
+          const menu = createElement('div', {
+            role: 'menu',
+          });
+
+          home.appendChild(menu);
+          inner.appendChild(home);
+          this.elements.chapters.panels.home = home;
+
+          popup.appendChild(inner);
+          container.appendChild(wrapper);
+
+          const video = getElement.call(this, `.${this.config.classNames.video}`);
+          video.appendChild(popup);
+
+          this.elements.chapters.popup = popup;
+          this.elements.chapters.menu = wrapper;
+        }
       }
 
       // Picture in picture button

@@ -93,6 +93,12 @@ class Plyr {
         panels: {},
         buttons: {},
       },
+      chapters: {
+        popup: null,
+        menu: null,
+        panels: {},
+        buttons: {},
+      }
     };
 
     // Captions

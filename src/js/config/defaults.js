@@ -140,6 +140,7 @@ const defaults = {
     'volume',
     'captions',
     'settings',
+    'chapters',
     'pip',
     'airplay',
     // 'download',
@@ -171,6 +172,7 @@ const defaults = {
     frameTitle: 'Player for {title}',
     captions: 'Captions',
     settings: 'Settings',
+    chapters: 'Chapters',
     pip: 'PIP',
     menuBack: 'Go back to previous menu',
     speed: 'Speed',
@@ -309,6 +311,7 @@ const defaults = {
       pip: '[data-plyr="pip"]',
       airplay: '[data-plyr="airplay"]',
       settings: '[data-plyr="settings"]',
+      chapters: '[data-plyr="chapters"]',
       loop: '[data-plyr="loop"]',
     },
     inputs: {
@@ -317,6 +320,7 @@ const defaults = {
       speed: '[data-plyr="speed"]',
       language: '[data-plyr="language"]',
       quality: '[data-plyr="quality"]',
+      chapters: '[data-plyr="chapters"]',
     },
     display: {
       currentTime: '.plyr__time--current',
@@ -440,6 +444,11 @@ const defaults = {
     // Custom settings from Plyr
     customControls: true,
     noCookie: false, // Whether to use an alternative version of YouTube without cookies
+  },
+  // markers
+  chapters: {
+    enabled: false,
+    contents: [],
   },
 };
 
