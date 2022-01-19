@@ -28,7 +28,8 @@
     @include plyr-range-thumb;
 
     appearance: none;
-    margin-top: calc(((#{$plyr-range-thumb-height} - #{$plyr-range-track-height}) / 2) * -1);
+    //margin-top: calc(((#{$plyr-range-thumb-height} - #{$plyr-range-track-height}) / 2) * -1);
+    margin-top: -4px;
   }
 
   // Mozilla

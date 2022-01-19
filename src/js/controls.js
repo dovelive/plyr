@@ -1122,14 +1122,25 @@ const controls = {
   // Create a settings menu item
   createChapterItem({ list, index, link, title, desc, thumbnail }) {
     const attributes = getAttributesFromSelector(this.config.selectors.inputs['chapters']);
-    const menuItem = createElement(
-      'a',
-      extend(attributes, {
-        class: `${this.config.classNames.control} ${attributes.class ? attributes.class : ''}`.trim(),
-        href: link,
-        index,
-      }),
-    );
+    let menuItem;
+    if (link) {
+      menuItem = createElement(
+          'a',
+          extend(attributes, {
+            class: `${this.config.classNames.control} ${attributes.class ? attributes.class : ''}`.trim(),
+            href: link,
+            index,
+          }),
+      );
+    } else {
+      menuItem = createElement(
+          'div',
+          extend(attributes, {
+            class: `${this.config.classNames.control} ${attributes.class ? attributes.class : ''}`.trim(),
+            index,
+          }),
+      );
+    }
 
     const highlightItem = createElement('div', {
       class: 'chapter-highlight',
@@ -1152,10 +1163,19 @@ const controls = {
       class: 'chapter-detail'
     });
 
-    const thumbnailItem = createElement('img', {
-      class: 'chapter-thumbnail',
+    const thumbnailItem = createElement('div', {
+      class: 'chapter-thumbnail'
+    });
+    const thumbnailImage = createElement('img', {
       src: thumbnail
     });
+    thumbnailItem.appendChild(thumbnailImage);
+    if (link) {
+      var playIcon = controls.createIcon.call(this, 'play', {
+        class: 'chapter-play',
+      });
+      thumbnailItem.appendChild(playIcon);
+    }
     detailDivItem.appendChild(thumbnailItem);
 
     const descriptionItem = createElement('div', {
