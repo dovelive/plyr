@@ -17,7 +17,7 @@ import {
   getAttributesFromSelector,
   getElement,
   getElements,
-  hasClass,
+  hasClass, insertAfter,
   matches,
   removeElement,
   setAttributes,
@@ -1757,7 +1757,7 @@ const controls = {
           container.appendChild(wrapper);
 
           const video = getElement.call(this, `.${this.config.classNames.video}`);
-          video.appendChild(popup);
+          insertAfter.call(this, popup, video);
 
           this.elements.chapters.popup = popup;
           this.elements.chapters.menu = wrapper;
