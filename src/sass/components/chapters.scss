@@ -28,12 +28,12 @@
     background: $plyr-chapter-background;
     border-radius: 4px;
     bottom: 40px;
-    right: 40px;
     box-shadow: $plyr-chapter-shadow;
     color: $plyr-chapter-color;
     font-size: $plyr-font-size-base;
     margin-bottom: 10px;
     position: absolute;
+    right: 40px;
     text-align: left;
     white-space: nowrap;
     z-index: 3;
@@ -43,10 +43,10 @@
       transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1), width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
       div[role=menu] {
-        max-height: 210px;
-        overflow-y: auto;
         display: flex;
         flex-direction: column;
+        max-height: 210px;
+        overflow-y: auto;
       }
     }
 
@@ -73,14 +73,14 @@
       display: flex;
       flex-direction: column;
       font-size: $plyr-font-size-chapter;
+      overflow: hidden;
       padding: calc(#{$plyr-control-padding} / 1.5) calc(#{$plyr-control-padding} * 1.5);
       user-select: none;
-      overflow: hidden;
 
       .chapter-title {
-        width: 400px;
         overflow: hidden;
         padding: 5px 0;
+        width: 400px;
       }
 
       .chapter-detail {
@@ -92,20 +92,20 @@
           width: 100px;
 
           .chapter-play {
-            position: absolute;
-            width: 36px;
             height: 36px;
             left: calc(50% - 18px);
+            position: absolute;
             top: calc(50% - 18px);
+            width: 36px;
           }
         }
 
         .chapter-desc {
           line-break: anywhere;
-          width: 300px;
-          white-space: pre-line;
-          padding: 0 0 0 10px;
           overflow: hidden;
+          padding: 0 0 0 10px;
+          white-space: pre-line;
+          width: 300px;
         }
       }
 
@@ -172,10 +172,9 @@
       width: calc(100% - 20px);
 
       > div {
-
         div[role=menu] {
-          max-height: unset;
           flex-direction: row;
+          max-height: unset;
         }
       }
 
@@ -200,14 +199,14 @@
           max-height: unset;
 
           .chapter-thumbnail {
-            width: 100%;
             height: 74px;
             overflow: hidden;
+            width: 100%;
           }
 
           .chapter-desc {
-            width: 100%;
             padding: 5px 0 0;
+            width: 100%;
           }
         }
       }
@@ -215,7 +214,6 @@
 
     @media (min-width: ($plyr-bp-lg)) {
       > div {
-
         div[role=menu] {
           max-height: 300px;
         }

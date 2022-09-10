@@ -17,9 +17,10 @@ import toggleClass from './toggle-class';
 
 (() => {
   const production = 'plyr.io';
+  const isProduction = window.location.host.includes(production);
 
   // Sentry for demo site (https://plyr.io) only
-  if (window.location.host === production) {
+  if (isProduction) {
     Sentry.init({
       dsn: 'https://d4ad9866ad834437a4754e23937071e4@sentry.io/305555',
       whitelistUrls: [production].map((d) => new RegExp(`https://(([a-z0-9])+(.))*${d}`)),
@@ -92,10 +93,10 @@ import toggleClass from './toggle-class';
             desc: 'test3test3test3test3test3test3test3test3test3test3test3test3test3test3'
         }]
       },
-      ads: {
-        enabled: window.location.host.includes(production),
+      /* ads: {
+        enabled: isProduction,
         publisherId: '918848828995742',
-      },
+      }, */
       previewThumbnails: {
         enabled: true,
         src: ['https://cdn.plyr.io/static/demo/thumbs/100p.vtt', 'https://cdn.plyr.io/static/demo/thumbs/240p.vtt'],
@@ -103,6 +104,34 @@ import toggleClass from './toggle-class';
       vimeo: {
         // Prevent Vimeo blocking plyr.io demo site
         referrerPolicy: 'no-referrer',
+      },
+      mediaMetadata: {
+        title: 'View From A Blue Moon',
+        album: 'Sports',
+        artist: 'Brainfarm',
+        artwork: [
+          {
+            src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg',
+            type: 'image/jpeg',
+          },
+        ],
+      },
+      markers: {
+        enabled: true,
+        points: [
+          {
+            time: 10,
+            label: 'first marker',
+          },
+          {
+            time: 40,
+            label: 'second marker',
+          },
+          {
+            time: 120,
+            label: '<strong>third</strong> marker',
+          },
+        ],
       },
     });
 

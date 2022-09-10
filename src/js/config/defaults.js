@@ -61,7 +61,7 @@ const defaults = {
   // Sprite (for icons)
   loadSprite: true,
   iconPrefix: 'plyr',
-  iconUrl: 'https://cdn.plyr.io/3.6.12/plyr.svg',
+  iconUrl: 'https://cdn.plyr.io/3.7.2/plyr.svg',
 
   // Blank video (used to prevent errors on source change)
   blankVideo: 'https://cdn.plyr.io/static/blank.mp4',
@@ -354,6 +354,7 @@ const defaults = {
     hover: 'plyr--hover',
     tooltip: 'plyr__tooltip',
     cues: 'plyr__cues',
+    marker: 'plyr__progress__marker',
     hidden: 'plyr__sr-only',
     hideControls: 'plyr--hide-controls',
     isIos: 'plyr--is-ios',
@@ -445,10 +446,25 @@ const defaults = {
     customControls: true,
     noCookie: false, // Whether to use an alternative version of YouTube without cookies
   },
+
   // markers
   chapters: {
     enabled: false,
     contents: [],
+  },
+
+  // Media Metadata
+  mediaMetadata: {
+    title: '',
+    artist: '',
+    album: '',
+    artwork: [],
+  },
+
+  // Markers
+  markers: {
+    enabled: false,
+    points: [],
   },
 };
 
